@@ -4,39 +4,87 @@ format:
   html:
     embed-resources: false
 editor: visual
+lang: pt
 ---
 
 ```{r}
 #| message: false
+
+# Carregando o pacote tidyverse
 library(tidyverse)
+library(knitr)
 ```
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+# Texto com código
 
 ```{r}
-1 + 1
+especie_mais_frequente <- starwars |>
+  count(species, sort = TRUE) |> 
+  slice_head(n = 1) |> 
+  select(species)
 ```
 
-You can add options to executable code like this
+Nesta análise, estamos explorando os dados da [base starwars](https://dplyr.tidyverse.org/reference/starwars.html) disponível no pacote `{dplyr}`. Existem `r nrow(starwars)` personagens cadastrados nessa base de dados. Esses personagens são de `r n_distinct(starwars$species)` espécies diferentes, sendo "`r especie_mais_frequente`" a espécie mais frequente.
+
+-   Importante para o inline-code:
+    -   evitar pular linha dentro do código;
+    -   o resultado precisa ser um vetor de tamanho 1.
+
+# Imagem
+
+[![Imagem por Alisson Horst](https://openscapes.org/img/blog/keynote/horst-starwars-rey.png){width="50%"}](https://openscapes.org/blog/2019-08-22-user-keynote/)
 
 ```{r}
-#| echo: false
-2 * 2
+#| out-width: "30%"
+#| fig-align: "right"
+# include_graphics("https://blog.curso-r.com/images/logo.webp")
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+# Tabelas
+
+-   Existem funções que usamos para adicionar tabelas. knitr::kable() é a mais simples, mas existem muitas outras!
 
 ```{r}
-#| warning: false
+#| label: tbl-contagem-especies
+#| tbl-cap: "Contagem de personagens do Starwars por espécie"
 starwars |> 
+  count(species, sort = TRUE) |> 
+  filter(n > 1) |> 
+  kable()
+```
+
+
+
+# Gráficos
+
+```{r}
+#| label: fig-starwars-plot
+#| warning: false
+#| echo: true
+#| fig-cap: "Massa x Altura"
+#| fig-align: "center"
+#| out-width: "70%"
+#| dpi: 500 # resolucao
+starwars |> 
+  # filter(mass < 1000) |> 
   ggplot() +
-  aes(x = height, y = mass, color = sex) +
+  aes(x = mass, y = height, color = sex) +
   geom_point() +
   theme_light()
 ```
+
+# Equações
+
+Para calcular o índice X, é necessário $a_n = 2 \cdot a_{n-1}$.
+
+A fórmula de Bhaskara é dada por:
+
+$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+# Referência cruzada
+
+Na @fig-starwars-plot,....
+
+Na @tbl-contagem-especies, ...
+
+
