@@ -5,6 +5,8 @@ format:
     embed-resources: false
 editor: visual
 lang: pt
+comments:
+  hypothesis: true
 ---
 
 ```{r}
